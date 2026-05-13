@@ -1,0 +1,12 @@
+/Users/user/gate-guard-llm/gemini-chat/src/app/page.tsx
+/Users/user/gate-guard-llm/gemini-chat/src/app/globals.css
+/Users/user/gate-guard-llm/gemini-chat/src/app/layout.tsx
+/Users/user/gate-guard-llm/gemini-chat/README.md
+/Users/user/gate-guard-llm/gemini-chat/.env
+/Users/user/gate-guard-llm/gemini-chat/src/app/api/chat/route.ts
+/Users/user/Brick_AI_Project/Brickaifigma/app/chat/page.tsx
+/Users/user/Brick_AI_Project/Brickaifigma/src/components/routes/ChatRoutePage.tsx
+/Users/user/Brick_AI_Project/Brickaifigma/src/components/ChatInterface.tsx
+/Users/user/Brick_AI_Project/Brickaifigma/src/components/ChatSuggestions.tsx
+/Users/user/Brick_AI_Project/Brickaifigma/src/styles/globals.css
+/Users/user/Brick_AI_Project/Brickaifigma/src/components/AppNavigator.tsx
