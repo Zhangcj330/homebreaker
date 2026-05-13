@@ -2,15 +2,9 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { DM_Sans } from "next/font/google";
 import { Mic, Plus, Send } from "lucide-react";
 
 const CORRECT_PASSWORD = "0221";
-
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
 
 interface Message {
   id: string;
@@ -37,9 +31,11 @@ export default function Home() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const composerShellRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const passwordInputRef = useRef<HTMLInputElement>(null);
   const sessionStartedAtRef = useRef(Date.now());
   const isEmptyState = messages.length === 0;
   const composerOffset = composerHeight;
+  const passwordDigits = Array.from({ length: 4 }, (_, index) => password[index] ?? "");
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,6 +56,10 @@ export default function Home() {
       setTimeout(() => setPasswordError(false), 1000);
     }
     setPassword("");
+  };
+
+  const handlePasswordChange = (value: string) => {
+    setPassword(value.replace(/\D/g, "").slice(0, 4));
   };
 
   useEffect(() => {
@@ -202,7 +202,7 @@ export default function Home() {
   };
 
   return (
-    <div className={`${dmSans.className} brick-ai-page-background h-screen overflow-hidden text-[#160211]`}>
+    <div className="brick-ai-page-background h-screen overflow-hidden text-[#160211]">
       <div className="mx-auto flex h-full w-full flex-col overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 sm:py-5">
@@ -232,7 +232,7 @@ export default function Home() {
                   className="h-[60px] w-auto sm:h-[75.66px]"
                 />
                 <h1 className="text-xl leading-tight text-[#160211]/70 sm:text-2xl sm:leading-[31px]">
-                  I am Brick, your AI Gate Guard
+                  I am Brick, your AI gatekeeper
                 </h1>
               </div>
             </div>
@@ -290,18 +290,42 @@ export default function Home() {
         <div ref={composerShellRef} className="pointer-events-auto w-full max-w-3xl space-y-3">
           {/* Password Input - Above chat input */}
           <form onSubmit={handlePasswordSubmit} className="flex items-center justify-center gap-2">
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter password"
-              className={`w-40 px-4 py-2.5 text-sm rounded-full border text-center transition-all ${
-                passwordError
-                  ? "border-red-500 bg-red-50 shake"
-                  : "border-gray-200 bg-white/95 shadow-[0_4px_20px_-8px_rgba(22,2,17,0.15)]"
+            <div
+              className={`relative flex items-center gap-1.5 rounded-2xl border bg-white/95 px-2 py-1.5 shadow-[0_4px_20px_-8px_rgba(22,2,17,0.15)] transition-all ${
+                passwordError ? "border-red-500 bg-red-50 shake" : "border-gray-200"
               }`}
-              maxLength={4}
-            />
+              onClick={() => passwordInputRef.current?.focus()}
+            >
+              <input
+                ref={passwordInputRef}
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                autoComplete="one-time-code"
+                value={password}
+                onChange={(e) => handlePasswordChange(e.target.value)}
+                aria-label="Enter 4 digit password"
+                className="absolute inset-0 h-full w-full cursor-text opacity-0"
+                maxLength={4}
+              />
+              {passwordDigits.map((digit, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  aria-label={`Password digit ${index + 1}`}
+                  onClick={() => passwordInputRef.current?.focus()}
+                  className={`flex h-9 w-9 items-center justify-center rounded-xl border text-base font-bold leading-none transition sm:h-10 sm:w-10 ${
+                    passwordError
+                      ? "border-red-200 bg-white text-red-700"
+                      : digit
+                        ? "border-[#160211] bg-white text-[#160211]"
+                        : "border-gray-200 bg-white/80 text-[#160211]/35"
+                  }`}
+                >
+                  {digit}
+                </button>
+              ))}
+            </div>
             <button
               type="submit"
               className="px-4 py-2.5 text-sm rounded-full bg-[#160211] text-white font-medium hover:bg-black transition-colors shadow-[0_4px_20px_-8px_rgba(22,2,17,0.3)]"
@@ -334,7 +358,7 @@ export default function Home() {
                         }
                       }
                     }}
-                    placeholder="Ask the gate guard..."
+                    placeholder="Ask the gatekeeper..."
                     rows={1}
                     className="max-h-[100px] min-h-[20px] w-full resize-none bg-transparent py-0 text-[14px] leading-5 text-[#160211] placeholder:text-[#8d8d8d] focus:outline-none sm:max-h-[120px] sm:min-h-[24px] sm:text-[15px] sm:leading-6"
                     disabled={isSending}
@@ -361,7 +385,7 @@ export default function Home() {
             </div>
           </form>
           <p className="mt-1.5 text-center text-[10px] text-[#7b7b7b] sm:mt-2 sm:text-xs">
-            Brick AI, your loyal gate guardian.
+            Brick AI, your loyal gatekeeper.
           </p>
         </div>
       </div>

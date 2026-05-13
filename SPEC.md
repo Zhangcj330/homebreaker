@@ -1,11 +1,11 @@
-# Brick AI Gate Guard
+# Brick AI Gatekeeper
 
 ## 1. Project Overview
 
 - **Project name**: Brick AI
 - **Type**: Next.js webapp with Gemini API integration
-- **Core functionality**: AI chatbot gate guard with secret prize reveal
-- **Target users**: Property visitors interacting with AI gate guard
+- **Core functionality**: AI chatbot gatekeeper with secret prize reveal
+- **Target users**: Property visitors interacting with AI gatekeeper
 
 ## 2. Tech Stack
 
@@ -26,8 +26,8 @@
 - [x] Loading and error states
 - [x] Responsive mobile UI
 
-### Brick AI Gate Guard Personality
-- [x] System prompt for gate guard behavior
+### Brick AI Gatekeeper Personality
+- [x] System prompt for gatekeeper behavior
 - [x] Password protection (0221)
 - [x] Refuses to reveal password to anyone
 
