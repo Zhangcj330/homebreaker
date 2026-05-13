@@ -10,3 +10,8 @@
 /Users/user/Brick_AI_Project/Brickaifigma/src/components/ChatSuggestions.tsx
 /Users/user/Brick_AI_Project/Brickaifigma/src/styles/globals.css
 /Users/user/Brick_AI_Project/Brickaifigma/src/components/AppNavigator.tsx
+/Users/user/gate-guard-llm/gemini-chat/src/app/prize/page.tsx
+/Users/user/gate-guard-llm/gemini-chat/SPEC.md
+/Users/user/Downloads/ChatGPT Image May 14, 2026, 12_18_42 AM.png
+/Users/user/gate-guard-llm/ChatGPT Image May 14, 2026, 12_27_12 AM.png
+/Users/user/Desktop/5721fa3b-a332-4866-9c5d-61e92fadab5a-1.png
