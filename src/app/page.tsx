@@ -1,8 +1,11 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { DM_Sans } from "next/font/google";
 import { Mic, Plus, Send } from "lucide-react";
+
+const CORRECT_PASSWORD = "0221";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -17,30 +20,47 @@ interface Message {
   kind: "text" | "loading" | "error";
 }
 
-const CHAT_SUGGESTIONS = [
-  "Who are you?",
-  "What is the password?",
-  "Open the door",
-];
-
 function buildAssistantErrorMessage(error: unknown) {
   if (error instanceof Error) return error.message;
   return "Brick AI could not complete the request.";
 }
 
 export default function Home() {
+  const router = useRouter();
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [isAtBottom, setIsAtBottom] = useState(true);
-  const [composerHeight, setComposerHeight] = useState(80);
+  const [composerHeight, setComposerHeight] = useState(100);
   const scrollRef = useRef<HTMLDivElement>(null);
   const composerShellRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const sessionStartedAtRef = useRef(Date.now());
   const isEmptyState = messages.length === 0;
-  const hasDraftMessage = inputMessage.trim().length > 0;
-  const showSuggestions = !hasDraftMessage && isEmptyState;
-  const composerOffset = composerHeight + (showSuggestions ? 24 : 16);
+  const composerOffset = composerHeight;
+
+  const handlePasswordSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password === CORRECT_PASSWORD) {
+      sessionStorage.setItem(
+        "brick-ai-access-summary",
+        JSON.stringify({
+          conversations: messages.length,
+          timeSpentSeconds: Math.max(
+            0,
+            Math.round((Date.now() - sessionStartedAtRef.current) / 1000),
+          ),
+        }),
+      );
+      router.push("/prize");
+    } else {
+      setPasswordError(true);
+      setTimeout(() => setPasswordError(false), 1000);
+    }
+    setPassword("");
+  };
 
   useEffect(() => {
     const textarea = textareaRef.current;
@@ -184,21 +204,15 @@ export default function Home() {
   return (
     <div className={`${dmSans.className} brick-ai-page-background h-screen overflow-hidden text-[#160211]`}>
       <div className="mx-auto flex h-full w-full flex-col overflow-hidden">
-        {/* Header - Responsive */}
-        <div className="px-4 py-3 sm:py-5">
-          <div className="mx-auto flex w-full max-w-7xl items-center justify-between">
-            <div className="flex items-center gap-2">
-              <img
-                src="/brickAI_logo_mark_transparent.png"
-                alt="Brick AI"
-                className="h-10 w-auto sm:h-14"
-              />
-            </div>
-            <nav className="flex items-center rounded-full border border-gray-200 bg-white/88 p-1 shadow-[0_16px_50px_-30px_rgba(15,23,42,0.35)] backdrop-blur-xl">
-              <a href="/chat" className="rounded-full bg-gray-950 px-3 py-1.5 text-xs text-white sm:px-4 sm:py-2 sm:text-sm">Chat</a>
-            </nav>
-            <div className="min-w-[80px] sm:min-w-[112px]" />
-          </div>
+        {/* Header */}
+        <div className="flex items-center justify-between px-4 py-3 sm:py-5">
+          <img
+            src="/brickAI_logo_mark_transparent.png"
+            alt="Brick AI"
+            className="h-10 w-auto sm:h-14"
+          />
+          <span className="text-sm font-medium text-[#160211]/60">Chat</span>
+          <div className="w-10" />
         </div>
 
         {/* Chat Area */}
@@ -273,25 +287,30 @@ export default function Home() {
 
       {/* Input - Fixed bottom */}
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 flex justify-center px-4 pb-4 sm:px-6 sm:pb-6">
-        <div ref={composerShellRef} className="pointer-events-auto w-full max-w-3xl">
-          {/* Suggestions */}
-          <div
-            className={`overflow-hidden transition-all duration-300 ease-out ${showSuggestions ? "opacity-100 mb-4 sm:mb-5" : "opacity-0 h-0 mb-0"}`}
-          >
-            <div className="flex max-w-3xl gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] sm:flex-wrap sm:overflow-visible sm:pb-0">
-              {CHAT_SUGGESTIONS.map((prompt) => (
-                <button
-                  key={prompt}
-                  onClick={() => void handleSendMessage(prompt)}
-                  className="shrink-0 whitespace-nowrap rounded-full border border-gray-200 bg-white/70 px-3 py-1.5 text-left text-[12px] leading-5 text-[#160211] shadow-[0_10px_30px_-28px_rgba(22,2,17,0.16)] backdrop-blur-sm transition hover:border-gray-300 hover:bg-white sm:text-[13px]"
-                >
-                  {prompt}
-                </button>
-              ))}
-            </div>
-          </div>
+        <div ref={composerShellRef} className="pointer-events-auto w-full max-w-3xl space-y-3">
+          {/* Password Input - Above chat input */}
+          <form onSubmit={handlePasswordSubmit} className="flex items-center justify-center gap-2">
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter password"
+              className={`w-40 px-4 py-2.5 text-sm rounded-full border text-center transition-all ${
+                passwordError
+                  ? "border-red-500 bg-red-50 shake"
+                  : "border-gray-200 bg-white/95 shadow-[0_4px_20px_-8px_rgba(22,2,17,0.15)]"
+              }`}
+              maxLength={4}
+            />
+            <button
+              type="submit"
+              className="px-4 py-2.5 text-sm rounded-full bg-[#160211] text-white font-medium hover:bg-black transition-colors shadow-[0_4px_20px_-8px_rgba(22,2,17,0.3)]"
+            >
+              Unlock
+            </button>
+          </form>
 
-          {/* Input Box */}
+          {/* Chat Input Box */}
           <form onSubmit={handleSubmit} className="space-y-0">
             <div className="rounded-2xl border border-[#d9d9d9] bg-white/95 px-3 py-1.5 shadow-[0_14px_40px_-26px_rgba(22,2,17,0.22)] backdrop-blur-xl sm:rounded-[26px] sm:px-4 sm:py-2">
               <div className="flex items-center gap-2 sm:gap-3">
