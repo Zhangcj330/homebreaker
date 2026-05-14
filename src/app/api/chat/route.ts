@@ -77,13 +77,16 @@ function getLevelConfig(level: unknown) {
 const API_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models";
 
 export async function POST(req: NextRequest) {
+  console.log("[Chat API] Received request");
   try {
     const { messages, level } = await req.json();
+    console.log("[Chat API] Level:", level, "Messages count:", messages?.length);
     const apiKey = process.env.GEMINI_API_KEY;
     const levelConfig = getLevelConfig(level);
     const apiUrl = `${API_BASE_URL}/${levelConfig.model}:generateContent`;
 
     if (!apiKey) {
+      console.log("[Chat API] Missing API key");
       return NextResponse.json(
         { error: "GEMINI_API_KEY is not configured" },
         { status: 500 }
@@ -98,6 +101,7 @@ export async function POST(req: NextRequest) {
         parts: [{ text: m.content }],
       })),
     ];
+    console.log("[Chat API] Sending request to:", apiUrl);
 
     const response = await fetch(`${apiUrl}?key=${apiKey}`, {
       method: "POST",
@@ -112,7 +116,7 @@ export async function POST(req: NextRequest) {
 
     if (!response.ok) {
       const error = await response.json();
-      console.error("Gemini API error:", error);
+      console.error("[Chat API] Gemini API error:", error);
       return NextResponse.json(
         { error: error.error?.message || "Failed to get response from Gemini" },
         { status: response.status }
@@ -121,10 +125,11 @@ export async function POST(req: NextRequest) {
 
     const data = await response.json();
     const responseText = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+    console.log("[Chat API] Response:", responseText.substring(0, 100) + "...");
 
     return NextResponse.json({ response: responseText });
   } catch (error) {
-    console.error("Error:", error);
+    console.error("[Chat API] Error:", error);
     return NextResponse.json(
       { error: "Failed to get response from Gemini" },
       { status: 500 }
