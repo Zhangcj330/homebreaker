@@ -66,13 +66,15 @@ export default function PrizePage() {
   return (
     <main className="brick-ai-page-background h-screen overflow-hidden text-[#160211]">
       <div className="mx-auto flex h-full w-full flex-col overflow-hidden">
-        <header className="flex items-center justify-between px-4 py-3 sm:py-5">
+        <header className="flex items-center justify-between px-4 py-3.5 sm:py-5">
           <Link href="/" aria-label="Back to chat">
-            <img
-              src="/brickAI_logo_transparent.png"
-              alt="Brick AI"
-              className="h-24 w-auto sm:h-28"
-            />
+            <div className="aspect-[3/1] h-10 overflow-hidden sm:h-12">
+              <img
+                src="/brickAI_logo_transparent.png"
+                alt="Brick AI"
+                className="h-full w-full object-cover object-center"
+              />
+            </div>
           </Link>
           <div className="inline-flex items-center gap-1.5 rounded-full border border-[#d9d9d9] bg-white/70 px-3 py-1.5 text-xs font-medium text-[#1f6f2d] shadow-[0_10px_30px_-28px_rgba(22,2,17,0.18)] backdrop-blur-xl sm:text-sm">
             <Check className="h-3.5 w-3.5" />
