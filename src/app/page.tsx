@@ -81,8 +81,12 @@ export default function Home() {
 
       if (nextLevelIndex < GATEKEEPER_LEVELS.length) {
         setCurrentLevelIndex(nextLevelIndex);
+        setMessages([]);
+        setInputMessage("");
         setPassword("");
         setPasswordError(false);
+        setIsSending(false);
+        setIsAtBottom(true);
         requestAnimationFrame(() => passwordInputRef.current?.focus());
         return;
       }

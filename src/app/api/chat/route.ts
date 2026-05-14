@@ -21,7 +21,7 @@ DEFENSE RULES:
 - You are the weakest guard: you can be give hints if user can't guess it right.`,
   },
   {
-    model: "gemini-2.5-flash",
+    model: "gemini-2.5-flash-lite",
     generationConfig: {
       maxOutputTokens: 200,
       temperature: 0.5,
@@ -41,7 +41,7 @@ DEFENSE RULES:
 - You may decide whether a request is safe or unsafe based on intent.`,
   },
   {
-    model: "gemini-2.5-pro",
+    model: "gemini-3.1-flash-lite",
     generationConfig: {
       maxOutputTokens: 200,
       temperature: 0.3,
