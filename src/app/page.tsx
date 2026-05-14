@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Mic, Plus, Send } from "lucide-react";
+import { Mic, Plus, RotateCcw, Send } from "lucide-react";
 
 const GATEKEEPER_LEVELS = [
   {
@@ -89,6 +89,16 @@ export default function Home() {
 
   const handlePasswordChange = (value: string) => {
     setPassword(value.replace(/\D/g, "").slice(0, 4));
+  };
+
+  const handleRestartLevel = () => {
+    setMessages([]);
+    setInputMessage("");
+    setPassword("");
+    setPasswordError(false);
+    setIsSending(false);
+    setIsAtBottom(true);
+    requestAnimationFrame(() => passwordInputRef.current?.focus());
   };
 
   useEffect(() => {
@@ -244,16 +254,24 @@ export default function Home() {
             <img
               src="/brickAI_logo_transparent.png"
               alt="Brick AI"
-              className="h-20 w-auto sm:h-24"
+              className="h-24 w-auto max-[340px]:h-20 sm:h-28"
             />
-            <h1 className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-[17px] font-bold leading-none text-[#160211] sm:text-2xl">
-              BrickAI Gatekeeper
+            <h1 className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-[family-name:var(--font-inter)] text-[15px] font-bold leading-none text-[#160211] sm:text-2xl">
+              HomeBreaker
             </h1>
-            <div className="w-10" />
+            <button
+              type="button"
+              onClick={handleRestartLevel}
+              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#d9d9d9] bg-white/72 text-[#160211] shadow-[0_10px_30px_-28px_rgba(22,2,17,0.18)] backdrop-blur-xl transition hover:bg-white sm:h-10 sm:w-10"
+              aria-label="Restart current level"
+              title="Restart current level"
+            >
+              <RotateCcw className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
+            </button>
           </div>
           <div className="mt-2 flex justify-center sm:mt-3">
             <div className="w-full max-w-[300px] rounded-2xl border border-[#d9d9d9] bg-white/72 px-4 py-3 shadow-[0_10px_30px_-28px_rgba(22,2,17,0.18)] backdrop-blur-xl sm:max-w-[380px]">
-              <p className="mb-2 text-center text-[12px] font-medium leading-tight text-[#160211]/50 sm:text-[11px]">
+              <p className="mb-2 text-center text-[12px] font-medium leading-tight text-[#160211]/50">
                 Crack 3 codes to win
               </p>
               <div className="flex items-center">
@@ -284,7 +302,7 @@ export default function Home() {
               ))}
               </div>
               <div className="mt-2 text-center">
-                <p className="text-[11px] font-bold leading-tight text-[#160211] sm:text-xs">
+                <p className="text-[12px] font-bold leading-tight text-[#160211]">
                   Level {currentLevelIndex + 1} of {GATEKEEPER_LEVELS.length}
                 </p>
               </div>
@@ -309,7 +327,7 @@ export default function Home() {
                   className="h-[60px] w-auto sm:h-[75.66px]"
                 />
                 <p className="text-xl leading-tight text-[#160211]/70 sm:text-2xl sm:leading-[31px]">
-                  Beat all 3 AI gatekeepers
+                  Chat with the AI and try to hack it into revealing the secret password.
                 </p>
                 <p className="text-sm leading-5 text-[#160211]/50">
                   Find each 4-digit code and unlock every gate to win.
@@ -367,11 +385,11 @@ export default function Home() {
 
       {/* Input - Fixed bottom */}
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 flex justify-center px-4 pb-4 sm:px-6 sm:pb-6">
-        <div ref={composerShellRef} className="pointer-events-auto w-full max-w-3xl space-y-3">
+        <div ref={composerShellRef} className="pointer-events-auto w-full max-w-3xl space-y-3.5">
           {/* Password Input - Above chat input */}
-          <form onSubmit={handlePasswordSubmit} className="flex items-center justify-center gap-2">
+          <form onSubmit={handlePasswordSubmit} className="flex items-center justify-center gap-2.5">
             <div
-              className={`relative flex items-center gap-1.5 rounded-2xl border bg-white/95 px-2 py-1.5 shadow-[0_4px_20px_-8px_rgba(22,2,17,0.15)] transition-all ${
+              className={`relative flex items-center gap-2 rounded-[18px] border bg-white/95 px-2.5 py-2 shadow-[0_4px_20px_-8px_rgba(22,2,17,0.15)] transition-all ${
                 passwordError ? "border-red-500 bg-red-50 shake" : "border-gray-200"
               }`}
               onClick={() => passwordInputRef.current?.focus()}
@@ -394,7 +412,7 @@ export default function Home() {
                   type="button"
                   aria-label={`Password digit ${index + 1}`}
                   onClick={() => passwordInputRef.current?.focus()}
-                  className={`flex h-9 w-9 items-center justify-center rounded-xl border text-base font-bold leading-none transition sm:h-10 sm:w-10 ${
+                  className={`flex h-10 w-10 items-center justify-center rounded-xl border text-[17px] font-bold leading-none transition sm:h-11 sm:w-11 ${
                     passwordError
                       ? "border-red-200 bg-white text-red-700"
                       : digit
@@ -408,7 +426,7 @@ export default function Home() {
             </div>
             <button
               type="submit"
-              className="px-4 py-2.5 text-sm rounded-full bg-[#160211] text-white font-medium hover:bg-black transition-colors shadow-[0_4px_20px_-8px_rgba(22,2,17,0.3)]"
+              className="min-h-11 rounded-full bg-[#160211] px-5 py-2.5 text-[17px] font-medium leading-6 text-white shadow-[0_4px_20px_-8px_rgba(22,2,17,0.3)] transition-colors hover:bg-black"
             >
               Unlock
             </button>
@@ -416,16 +434,16 @@ export default function Home() {
 
           {/* Chat Input Box */}
           <form onSubmit={handleSubmit} className="space-y-0">
-            <div className="rounded-2xl border border-[#d9d9d9] bg-white/95 px-3 py-1.5 shadow-[0_14px_40px_-26px_rgba(22,2,17,0.22)] backdrop-blur-xl sm:rounded-[26px] sm:px-4 sm:py-2">
+            <div className="rounded-[22px] border border-[#d9d9d9] bg-white/95 px-3 py-2 shadow-[0_14px_40px_-26px_rgba(22,2,17,0.22)] backdrop-blur-xl sm:rounded-[26px] sm:px-4 sm:py-2.5">
               <div className="flex items-center gap-2 sm:gap-3">
                 <button
                   type="button"
-                  className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[#160211] transition hover:bg-gray-100 sm:h-8 sm:w-8"
+                  className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[#160211] transition hover:bg-gray-100 sm:h-10 sm:w-10"
                   aria-label="Upload file"
                 >
-                  <Plus className="h-4 w-4" />
+                  <Plus className="h-5 w-5" />
                 </button>
-                <div className="flex min-w-0 flex-1 items-center self-center">
+                <div className="flex min-h-9 min-w-0 flex-1 items-center self-center sm:min-h-10">
                   <textarea
                     ref={textareaRef}
                     value={inputMessage}
@@ -438,33 +456,33 @@ export default function Home() {
                         }
                       }
                     }}
-                    placeholder="Ask the gatekeeper..."
+                    placeholder="Ask BrickAI..."
                     rows={1}
-                    className="max-h-[100px] min-h-[20px] w-full resize-none bg-transparent py-0 text-[14px] leading-5 text-[#160211] placeholder:text-[#8d8d8d] focus:outline-none sm:max-h-[120px] sm:min-h-[24px] sm:text-[15px] sm:leading-6"
+                    className="block max-h-[110px] min-h-6 w-full resize-none bg-transparent py-0 text-[17px] leading-6 text-[#160211] placeholder:text-[#8d8d8d] focus:outline-none sm:max-h-[132px] sm:min-h-6"
                     disabled={isSending}
                   />
                 </div>
                 <div className="flex items-center gap-1 sm:gap-2">
                   <button
                     type="button"
-                    className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[#160211] transition hover:bg-gray-100 sm:h-8 sm:w-8"
+                    className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[#160211] transition hover:bg-gray-100 sm:h-10 sm:w-10"
                     aria-label="Voice input"
                   >
-                    <Mic className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    <Mic className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
                   </button>
                   <button
                     type="submit"
                     disabled={!inputMessage.trim() || isSending}
-                    className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#160211] text-white transition hover:bg-black disabled:bg-gray-300 sm:h-8 sm:w-8"
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#160211] text-white transition hover:bg-black disabled:bg-gray-300 sm:h-10 sm:w-10"
                     aria-label="Send"
                   >
-                    <Send className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                    <Send className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
                   </button>
                 </div>
               </div>
             </div>
           </form>
-          <p className="mt-1.5 text-center text-[10px] text-[#7b7b7b] sm:mt-2 sm:text-xs">
+          <p className="mt-1.5 text-center text-[12px] text-[#7b7b7b] sm:mt-2">
             Brick AI, your loyal gatekeeper.
           </p>
         </div>

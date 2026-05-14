@@ -71,7 +71,7 @@ export default function PrizePage() {
             <img
               src="/brickAI_logo_transparent.png"
               alt="Brick AI"
-              className="h-20 w-auto sm:h-24"
+              className="h-24 w-auto sm:h-28"
             />
           </Link>
           <div className="inline-flex items-center gap-1.5 rounded-full border border-[#d9d9d9] bg-white/70 px-3 py-1.5 text-xs font-medium text-[#1f6f2d] shadow-[0_10px_30px_-28px_rgba(22,2,17,0.18)] backdrop-blur-xl sm:text-sm">
@@ -81,7 +81,7 @@ export default function PrizePage() {
           <div className="w-10" />
         </header>
 
-        <section className="relative flex min-h-0 flex-1 flex-col overflow-hidden px-4 pb-[154px] pt-4 sm:px-7 sm:pb-[170px]">
+        <section className="relative flex min-h-0 flex-1 flex-col overflow-hidden px-4 pb-[166px] pt-4 sm:px-7 sm:pb-[184px]">
           <div className="pointer-events-none absolute bottom-10 left-1/2 h-[300px] w-[300px] -translate-x-[65%] rounded-full bg-[#b9b9b9]/55 blur-[200px] sm:h-[414px] sm:w-[414px] sm:blur-[250px]" />
           <div className="pointer-events-none absolute bottom-20 left-1/2 h-[200px] w-[200px] translate-x-[28%] rounded-full bg-[#aaaaaa]/50 blur-[120px] sm:bottom-28 sm:h-[280px] sm:w-[280px] sm:blur-[150px]" />
 
@@ -119,7 +119,7 @@ export default function PrizePage() {
             >
               <div className="flex items-center justify-between">
                 <h2 className="text-sm font-bold text-[#160211] sm:text-base">Security summary</h2>
-                <span className="rounded-full bg-[#eaf8ed] px-2.5 py-1 text-[11px] font-bold uppercase text-[#1f6f2d]">
+                <span className="rounded-full bg-[#eaf8ed] px-2.5 py-1 text-[12px] font-bold uppercase text-[#1f6f2d]">
                   verified
                 </span>
               </div>
@@ -150,10 +150,10 @@ export default function PrizePage() {
       </div>
 
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 flex justify-center px-4 pb-4 sm:px-6 sm:pb-6">
-        <div className="pointer-events-auto w-full max-w-3xl space-y-3">
+        <div className="pointer-events-auto w-full max-w-3xl space-y-3.5">
           <Link
             href="/"
-            className="flex h-[54px] w-full items-center justify-center gap-3 rounded-2xl bg-[#160211] px-5 text-[15px] font-bold text-white shadow-[0_14px_40px_-26px_rgba(22,2,17,0.42)] transition hover:bg-black sm:h-[60px] sm:rounded-[26px] sm:text-base"
+            className="flex h-[58px] w-full items-center justify-center gap-3 rounded-[22px] bg-[#160211] px-5 text-[17px] font-bold leading-6 text-white shadow-[0_14px_40px_-26px_rgba(22,2,17,0.42)] transition hover:bg-black sm:h-[64px] sm:rounded-[26px]"
           >
             <span>Play Again</span>
             <ArrowRight className="h-5 w-5" />
