@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Mic, Plus, RotateCcw, Send } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 
 const GATEKEEPER_LEVELS = [
   {
@@ -387,13 +388,13 @@ export default function Home() {
                                 : "border-gray-200 bg-white/92"
                             }`}
                           >
-                            <p
-                              className={`text-sm leading-5 sm:text-base sm:leading-6 ${
+                            <div
+                              className={`markdown-message text-sm leading-5 sm:text-base sm:leading-6 ${
                                 message.kind === "loading" ? "animate-pulse text-[#160211]/60" : "text-[#160211]/80"
                               }`}
                             >
-                              {message.content}
-                            </p>
+                              <ReactMarkdown>{message.content}</ReactMarkdown>
+                            </div>
                           </div>
                         )}
                       </div>
