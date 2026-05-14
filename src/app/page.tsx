@@ -4,7 +4,23 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Mic, Plus, Send } from "lucide-react";
 
-const CORRECT_PASSWORD = "0221";
+const GATEKEEPER_LEVELS = [
+  {
+    agent: "Brick",
+    title: "Front Gate",
+    password: "0221",
+  },
+  {
+    agent: "Cipher",
+    title: "Signal Lock",
+    password: "3147",
+  },
+  {
+    agent: "Knox",
+    title: "Vault Door",
+    password: "8095",
+  },
+];
 
 interface Message {
   id: string;
@@ -25,6 +41,7 @@ export default function Home() {
   const [inputMessage, setInputMessage] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState(false);
+  const [currentLevelIndex, setCurrentLevelIndex] = useState(0);
   const [isSending, setIsSending] = useState(false);
   const [isAtBottom, setIsAtBottom] = useState(true);
   const [composerHeight, setComposerHeight] = useState(100);
@@ -36,14 +53,26 @@ export default function Home() {
   const isEmptyState = messages.length === 0;
   const composerOffset = composerHeight;
   const passwordDigits = Array.from({ length: 4 }, (_, index) => password[index] ?? "");
+  const currentGatekeeper = GATEKEEPER_LEVELS[currentLevelIndex];
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === CORRECT_PASSWORD) {
+    if (password === currentGatekeeper.password) {
+      const nextLevelIndex = currentLevelIndex + 1;
+
+      if (nextLevelIndex < GATEKEEPER_LEVELS.length) {
+        setCurrentLevelIndex(nextLevelIndex);
+        setPassword("");
+        setPasswordError(false);
+        requestAnimationFrame(() => passwordInputRef.current?.focus());
+        return;
+      }
+
       sessionStorage.setItem(
         "brick-ai-access-summary",
         JSON.stringify({
           conversations: messages.length,
+          levelsCleared: GATEKEEPER_LEVELS.length,
           timeSpentSeconds: Math.max(
             0,
             Math.round((Date.now() - sessionStartedAtRef.current) / 1000),
@@ -160,7 +189,12 @@ export default function Home() {
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: [...messages, { role: "user", content: messageText }] }),
+        body: JSON.stringify({
+          gatekeeper: currentGatekeeper,
+          level: currentLevelIndex + 1,
+          totalLevels: GATEKEEPER_LEVELS.length,
+          messages: [...messages, { role: "user", content: messageText }],
+        }),
       });
 
       if (!response.ok) throw new Error("Failed to get response");
@@ -205,14 +239,57 @@ export default function Home() {
     <div className="brick-ai-page-background h-screen overflow-hidden text-[#160211]">
       <div className="mx-auto flex h-full w-full flex-col overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 sm:py-5">
-          <img
-            src="/brickAI_logo_mark_transparent.png"
-            alt="Brick AI"
-            className="h-10 w-auto sm:h-14"
-          />
-          <span className="text-sm font-medium text-[#160211]/60">Chat</span>
-          <div className="w-10" />
+        <div className="px-4 py-3 sm:py-5">
+          <div className="relative flex items-center justify-between">
+            <img
+              src="/brickAI_logo_transparent.png"
+              alt="Brick AI"
+              className="h-20 w-auto sm:h-24"
+            />
+            <h1 className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-[17px] font-bold leading-none text-[#160211] sm:text-2xl">
+              BrickAI Gatekeeper
+            </h1>
+            <div className="w-10" />
+          </div>
+          <div className="mt-2 flex justify-center sm:mt-3">
+            <div className="w-full max-w-[300px] rounded-2xl border border-[#d9d9d9] bg-white/72 px-4 py-3 shadow-[0_10px_30px_-28px_rgba(22,2,17,0.18)] backdrop-blur-xl sm:max-w-[380px]">
+              <p className="mb-2 text-center text-[12px] font-medium leading-tight text-[#160211]/50 sm:text-[11px]">
+                Crack 3 codes to win
+              </p>
+              <div className="flex items-center">
+              {GATEKEEPER_LEVELS.map((level, index) => (
+                  <div key={level.agent} className="flex flex-1 items-center last:flex-none">
+                    <span
+                      aria-label={`Level ${index + 1}${index === currentLevelIndex ? " current" : ""}`}
+                      className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border transition ${
+                        index === currentLevelIndex
+                          ? "border-[#160211] bg-[#160211]"
+                          : index < currentLevelIndex
+                            ? "border-[#160211] bg-white"
+                            : "border-[#160211]/15 bg-[#160211]/10"
+                      }`}
+                    >
+                      {index < currentLevelIndex ? (
+                        <span className="h-1.5 w-1.5 rounded-full bg-[#160211]" />
+                      ) : null}
+                    </span>
+                    {index < GATEKEEPER_LEVELS.length - 1 ? (
+                      <span
+                        className={`mx-2 h-px flex-1 transition ${
+                          index < currentLevelIndex ? "bg-[#160211]" : "bg-[#160211]/15"
+                        }`}
+                      />
+                    ) : null}
+                  </div>
+              ))}
+              </div>
+              <div className="mt-2 text-center">
+                <p className="text-[11px] font-bold leading-tight text-[#160211] sm:text-xs">
+                  Level {currentLevelIndex + 1} of {GATEKEEPER_LEVELS.length}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Chat Area */}
@@ -225,15 +302,18 @@ export default function Home() {
               className="relative flex min-h-0 flex-1 flex-col items-center justify-center transition-[padding-bottom] duration-200 ease-out"
               style={{ paddingBottom: `${composerOffset}px` }}
             >
-              <div className="flex w-full max-w-[460px] flex-col items-center gap-4 px-2 text-center sm:gap-5">
+              <div className="flex w-full max-w-[460px] flex-col items-center gap-3 px-2 text-center sm:gap-4">
                 <img
                   src="/brickAI_logo_mark_transparent.png"
                   alt="Brick AI mark"
                   className="h-[60px] w-auto sm:h-[75.66px]"
                 />
-                <h1 className="text-xl leading-tight text-[#160211]/70 sm:text-2xl sm:leading-[31px]">
-                  I am Brick, your AI gatekeeper
-                </h1>
+                <p className="text-xl leading-tight text-[#160211]/70 sm:text-2xl sm:leading-[31px]">
+                  Beat all 3 AI gatekeepers
+                </p>
+                <p className="text-sm leading-5 text-[#160211]/50">
+                  Find each 4-digit code and unlock every gate to win.
+                </p>
               </div>
             </div>
           ) : (

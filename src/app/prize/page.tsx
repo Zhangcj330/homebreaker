@@ -15,6 +15,7 @@ import {
 
 const DEFAULT_SUMMARY = {
   conversations: 12,
+  levelsCleared: 3,
   timeSpentSeconds: 167,
 };
 
@@ -45,6 +46,10 @@ function getStoredSummary() {
         typeof parsedSummary.conversations === "number"
           ? parsedSummary.conversations
           : DEFAULT_SUMMARY.conversations,
+      levelsCleared:
+        typeof parsedSummary.levelsCleared === "number"
+          ? parsedSummary.levelsCleared
+          : DEFAULT_SUMMARY.levelsCleared,
       timeSpentSeconds:
         typeof parsedSummary.timeSpentSeconds === "number"
           ? parsedSummary.timeSpentSeconds
@@ -64,9 +69,9 @@ export default function PrizePage() {
         <header className="flex items-center justify-between px-4 py-3 sm:py-5">
           <Link href="/" aria-label="Back to chat">
             <img
-              src="/brickAI_logo_mark_transparent.png"
+              src="/brickAI_logo_transparent.png"
               alt="Brick AI"
-              className="h-10 w-auto sm:h-14"
+              className="h-20 w-auto sm:h-24"
             />
           </Link>
           <div className="inline-flex items-center gap-1.5 rounded-full border border-[#d9d9d9] bg-white/70 px-3 py-1.5 text-xs font-medium text-[#1f6f2d] shadow-[0_10px_30px_-28px_rgba(22,2,17,0.18)] backdrop-blur-xl sm:text-sm">
@@ -128,9 +133,9 @@ export default function PrizePage() {
                 />
                 <SummaryRow
                   icon={<Code2 className="h-4 w-4" />}
-                  title="Password"
-                  description="4-digit code accepted"
-                  value="••••"
+                  title="Gate Codes"
+                  description={`${summary.levelsCleared} passwords accepted`}
+                  value={`${summary.levelsCleared}/3`}
                 />
                 <SummaryRow
                   icon={<Clock3 className="h-4 w-4" />}
