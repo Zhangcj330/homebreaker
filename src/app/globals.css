@@ -2,13 +2,13 @@
 
 :root {
   --font-size: 16px;
-  --background: #f8fbfc;
-  --brick-ai-page-background:
-    radial-gradient(circle at top, rgba(74, 95, 255, 0.08), transparent 55%),
-    radial-gradient(circle at bottom, rgba(92, 255, 211, 0.08), transparent 45%),
-    linear-gradient(to bottom, #eff6ff 0%, #ffffff 48%, #ecfdf5 100%);
-  --foreground: oklch(0.145 0 0);
-  --radius: 0.625rem;
+  --background: #ffffff;
+  --foreground: #000000;
+  --grey-50: #F6F6F6;
+  --grey-100: #EEEEEE;
+  --grey-200: #E2E2E2;
+  --grey-500: #6B6B6B;
+  --radius: 0.5rem;
 }
 
 html {
@@ -16,17 +16,13 @@ html {
 }
 
 body {
-  background: var(--brick-ai-page-background);
-  background-attachment: fixed;
-  font-family: var(--font-dm-sans), Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: #000000;
+  font-family: var(--font-hanken), -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 @layer utilities {
-  .brick-ai-page-background {
-    background: var(--brick-ai-page-background);
-    background-attachment: fixed;
-  }
-
   .shake {
     animation: shake 0.4s ease-in-out;
   }
@@ -36,12 +32,12 @@ body {
   }
 
   .markdown-message strong {
-    color: #160211;
+    color: #000;
     font-weight: 700;
   }
 
   .markdown-message em {
-    color: rgba(22, 2, 17, 0.7);
+    color: rgba(0, 0, 0, 0.65);
   }
 
   .markdown-message ul,
@@ -63,16 +59,17 @@ body {
 
   .markdown-message code {
     border-radius: 0.375rem;
-    background: rgba(22, 2, 17, 0.06);
+    background: #F6F6F6;
     padding: 0.1rem 0.3rem;
-    color: #160211;
+    color: #000;
     font-size: 0.92em;
+    font-family: var(--font-mono), monospace;
   }
 
   .markdown-message pre {
     overflow-x: auto;
-    border-radius: 0.75rem;
-    background: rgba(22, 2, 17, 0.06);
+    border-radius: 0.5rem;
+    background: #F6F6F6;
     padding: 0.75rem;
   }
 

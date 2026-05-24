@@ -1,27 +1,22 @@
 import type { Metadata } from "next";
-import { DM_Sans, Geist_Mono, Inter } from "next/font/google";
+import { Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+const hankenGrotesk = Hanken_Grotesk({
+  variable: "--font-hanken",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
   weight: ["400", "500", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["700"],
-});
-
 export const metadata: Metadata = {
-  title: "Gemini Chat",
-  description: "AI chatbot powered by Google Gemini",
+  title: "Brick AI — HomeBreaker",
+  description: "AI gatekeeper powered by Brick AI",
 };
 
 export default function RootLayout({
@@ -32,9 +27,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dmSans.variable} ${geistMono.variable} ${inter.variable} h-full antialiased`}
+      className={`${hankenGrotesk.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className={`${dmSans.className} h-full flex flex-col`}>{children}</body>
+      <body className={`${hankenGrotesk.className} h-full flex flex-col bg-white text-black`}>{children}</body>
     </html>
   );
 }

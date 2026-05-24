@@ -275,156 +275,149 @@ export default function Home() {
   };
 
   return (
-    <div className="brick-ai-page-background h-screen overflow-hidden text-[#160211]">
-      <div className="mx-auto flex h-full w-full flex-col overflow-hidden">
-        {/* Header */}
-        <div className="px-4 py-3.5 sm:py-5">
-          <div className="relative flex items-center justify-between">
-            <div className="aspect-[3/1] h-10 overflow-hidden max-[340px]:h-7 sm:h-12">
-              <img
-                src="/brickAI_logo_transparent.png"
-                alt="Brick AI"
-                className="h-full w-full object-cover object-center"
-              />
-            </div>
-            <h1 className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-[family-name:var(--font-inter)] text-[15px] font-bold leading-none text-[#160211] sm:text-2xl">
-              HomeBreaker
-            </h1>
+    <div className="flex h-screen flex-col overflow-hidden bg-white text-black">
+
+      {/* ── Nav — V14 style ─────────────────────────────────── */}
+      <nav className="sticky top-0 z-50 h-[66px] shrink-0 border-b border-[#EEEEEE] bg-white">
+        <div className="mx-auto flex h-full max-w-7xl items-center gap-8 px-8 sm:px-10">
+          {/* Logo */}
+          <img src="/brick-wordmark.svg" alt="Brick AI" className="h-7 w-auto" />
+          {/* Centred title */}
+          <h1 className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-[15px] font-bold tracking-[-0.01em] text-black">
+            HomeBreaker
+          </h1>
+          {/* Right side */}
+          <div className="ml-auto flex items-center gap-3">
             <button
               type="button"
               onClick={handleRestartLevel}
-              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#d9d9d9] bg-white/72 text-[#160211] shadow-[0_10px_30px_-28px_rgba(22,2,17,0.18)] backdrop-blur-xl transition hover:bg-white max-[340px]:h-9 max-[340px]:w-9 sm:h-11 sm:w-11"
+              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#E2E2E2] bg-white text-black transition hover:bg-[#F6F6F6]"
               aria-label="Restart current level"
               title="Restart current level"
             >
-              <RotateCcw className="h-4.5 w-4.5 max-[340px]:h-4 max-[340px]:w-4 sm:h-5 sm:w-5" />
+              <RotateCcw className="h-4 w-4" />
             </button>
           </div>
-          <div className="mt-2 flex justify-center sm:mt-3">
-            <div className="w-full max-w-[300px] rounded-2xl border border-[#d9d9d9] bg-white/72 px-4 py-3 shadow-[0_10px_30px_-28px_rgba(22,2,17,0.18)] backdrop-blur-xl sm:max-w-[380px]">
-              <p className="mb-2 text-center text-[12px] font-medium leading-tight text-[#160211]/50">
-                Crack 3 passwords to win
-              </p>
-              <div className="flex items-center">
-              {GATEKEEPER_LEVELS.map((level, index) => (
-                  <div key={level.title} className="flex flex-1 items-center last:flex-none">
-                    <span
-                      aria-label={`Level ${index + 1}${index === currentLevelIndex ? " current" : ""}`}
-                      className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border transition ${
-                        index === currentLevelIndex
-                          ? "border-[#160211] bg-[#160211]"
-                          : index < currentLevelIndex
-                            ? "border-[#160211] bg-white"
-                            : "border-[#160211]/15 bg-[#160211]/10"
-                      }`}
-                    >
-                      {index < currentLevelIndex ? (
-                        <span className="h-1.5 w-1.5 rounded-full bg-[#160211]" />
-                      ) : null}
-                    </span>
-                    {index < GATEKEEPER_LEVELS.length - 1 ? (
-                      <span
-                        className={`mx-2 h-px flex-1 transition ${
-                          index < currentLevelIndex ? "bg-[#160211]" : "bg-[#160211]/15"
-                        }`}
-                      />
-                    ) : null}
-                  </div>
-              ))}
-              </div>
-              <div className="mt-2 text-center">
-                <p className="text-[12px] font-bold leading-tight text-[#160211]">
-                  Level {currentLevelIndex + 1} of {GATEKEEPER_LEVELS.length}
-                </p>
-                <p className="mt-1 text-[11px] font-medium leading-tight text-[#160211]/45">
-                  {currentGatekeeper.title} / {currentGatekeeper.difficulty}
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
+      </nav>
 
-        {/* Chat Area */}
-        <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden px-4 pb-4 sm:px-7 sm:pb-7">
-          <div className="pointer-events-none absolute bottom-10 left-1/2 h-[300px] w-[300px] -translate-x-[65%] rounded-full bg-[#b9b9b9]/55 blur-[200px] sm:h-[414px] sm:w-[414px] sm:blur-[250px]" />
-          <div className="pointer-events-none absolute bottom-20 left-1/2 h-[200px] w-[200px] translate-x-[28%] rounded-full bg-[#aaaaaa]/50 blur-[120px] sm:bottom-28 sm:h-[280px] sm:w-[280px] sm:blur-[150px]" />
-
-          {isEmptyState ? (
-            <div
-              className="relative flex min-h-0 flex-1 flex-col items-center justify-center transition-[padding-bottom] duration-200 ease-out"
-              style={{ paddingBottom: `${composerOffset}px` }}
-            >
-              <div className="flex w-full max-w-[460px] flex-col items-center gap-3 px-2 text-center sm:gap-4">
-                <img
-                  src="/brickAI_logo_mark_transparent.png"
-                  alt="Brick AI mark"
-                  className="h-[60px] w-auto sm:h-[75.66px]"
-                />
-                <p className="text-xl leading-tight text-[#160211]/70 sm:text-2xl sm:leading-[31px]">
-                  Chat with the AI and try to hack it into revealing the secret password.
-                </p>
-                <p className="text-sm leading-5 text-[#160211]/50">
-                  Find each 4-digit code and unlock every gate to win.
-                </p>
+      {/* ── Level progress bar ──────────────────────────────── */}
+      <div className="shrink-0 border-b border-[#EEEEEE] bg-white px-8 py-2.5 sm:px-10">
+        <div className="mx-auto flex max-w-3xl items-center gap-4">
+          <span className="text-[11px] font-[700] uppercase tracking-[0.08em] text-[#6B6B6B]">
+            Level {currentLevelIndex + 1}/{GATEKEEPER_LEVELS.length}
+          </span>
+          <div className="flex flex-1 items-center gap-0">
+            {GATEKEEPER_LEVELS.map((level, index) => (
+              <div key={level.title} className="flex flex-1 items-center last:flex-none">
+                <span
+                  aria-label={`Level ${index + 1}${index === currentLevelIndex ? " current" : ""}`}
+                  className={`flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full border transition ${
+                    index === currentLevelIndex
+                      ? "border-black bg-black"
+                      : index < currentLevelIndex
+                        ? "border-black bg-white"
+                        : "border-[#E2E2E2] bg-[#F6F6F6]"
+                  }`}
+                >
+                  {index < currentLevelIndex ? (
+                    <span className="h-1 w-1 rounded-full bg-black" />
+                  ) : null}
+                </span>
+                {index < GATEKEEPER_LEVELS.length - 1 ? (
+                  <span
+                    className={`mx-1.5 h-px flex-1 transition ${
+                      index < currentLevelIndex ? "bg-black" : "bg-[#E2E2E2]"
+                    }`}
+                  />
+                ) : null}
               </div>
-            </div>
-          ) : (
-            <div
-              className="relative flex min-h-0 flex-1 flex-col transition-[padding-bottom] duration-200 ease-out"
-              style={{ paddingBottom: `${composerOffset}px` }}
-            >
-              <div
-                ref={scrollRef}
-                className="min-h-0 flex-1 overflow-y-auto pr-1 sm:pr-3"
-              >
-                <div className="mx-auto flex w-full max-w-3xl flex-col">
-                  <div className="flex flex-col gap-3 px-1 py-2 sm:gap-4 sm:px-0 sm:py-2">
-                    {messages.map((message) => (
-                      <div
-                        key={message.id}
-                        className={`flex ${
-                          message.role === "user" ? "justify-end" : "justify-start"
-                        }`}
-                      >
-                        {message.role === "user" ? (
-                          <div className="max-w-[85%] rounded-2xl border border-gray-900 bg-gray-900 px-3 py-2.5 text-sm leading-5 text-white sm:max-w-[80%] sm:text-base">
-                            {message.content}
-                          </div>
-                        ) : (
-                          <div
-                            className={`max-w-[90%] rounded-2xl border px-4 py-3 text-[#160211] shadow-[0_14px_36px_-30px_rgba(22,2,17,0.18)] sm:max-w-[84%] sm:rounded-[24px] sm:px-5 sm:py-4 ${
-                              message.kind === "error"
-                                ? "border-red-200 bg-red-50/90"
-                                : "border-gray-200 bg-white/92"
-                            }`}
-                          >
-                            <div
-                              className={`markdown-message text-sm leading-5 sm:text-base sm:leading-6 ${
-                                message.kind === "loading" ? "animate-pulse text-[#160211]/60" : "text-[#160211]/80"
-                              }`}
-                            >
-                              <ReactMarkdown>{message.content}</ReactMarkdown>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+            ))}
+          </div>
+          <span className="text-[11px] font-[500] text-[#6B6B6B]">
+            {currentGatekeeper.title} · {currentGatekeeper.difficulty}
+          </span>
         </div>
       </div>
 
-      {/* Input - Fixed bottom */}
+      {/* ── Chat Area ───────────────────────────────────────── */}
+      <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden px-4 pb-4 sm:px-7 sm:pb-7">
+
+        {isEmptyState ? (
+          <div
+            className="flex min-h-0 flex-1 flex-col items-center justify-center transition-[padding-bottom] duration-200 ease-out"
+            style={{ paddingBottom: `${composerOffset}px` }}
+          >
+            <div className="flex w-full max-w-[460px] flex-col items-center gap-4 px-2 text-center">
+              <img src="/brick-mark-black.svg" alt="Brick AI" className="h-14 w-14 object-contain" />
+              <p className="text-xl font-[500] leading-tight text-black sm:text-2xl">
+                Chat with the AI and try to hack it into revealing the secret password.
+              </p>
+              <p className="text-sm leading-5 text-[#6B6B6B]">
+                Find each 4-digit code and unlock every gate to win.
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div
+            className="relative flex min-h-0 flex-1 flex-col transition-[padding-bottom] duration-200 ease-out"
+            style={{ paddingBottom: `${composerOffset}px` }}
+          >
+            <div
+              ref={scrollRef}
+              className="min-h-0 flex-1 overflow-y-auto pr-1 sm:pr-2"
+              style={{ scrollbarWidth: "thin" }}
+            >
+              <div className="mx-auto flex w-full max-w-3xl flex-col">
+                <div className="flex flex-col gap-2 px-1 py-4 sm:gap-3 sm:px-0">
+                  {messages.map((message) => (
+                    <div
+                      key={message.id}
+                      className={`flex ${
+                        message.role === "user" ? "justify-end" : "justify-start"
+                      }`}
+                    >
+                      {message.role === "user" ? (
+                        /* V14 user bubble: black bg, white text, rounded pill */
+                        <div className="max-w-[85%] rounded-2xl rounded-br-[4px] bg-black px-3 py-2.5 text-sm leading-5 text-white sm:max-w-[80%] sm:text-[14px] sm:leading-[1.5]">
+                          {message.content}
+                        </div>
+                      ) : (
+                        /* V14 AI bubble: #F6F6F6, rounded with flat bottom-left */
+                        <div
+                          className={`max-w-[90%] rounded-2xl rounded-bl-[4px] px-4 py-3 text-black sm:max-w-[84%] sm:px-5 sm:py-3.5 ${
+                            message.kind === "error"
+                              ? "border border-red-200 bg-red-50"
+                              : "bg-[#F6F6F6]"
+                          }`}
+                        >
+                          <div
+                            className={`markdown-message text-sm leading-[1.5] sm:text-[14px] ${
+                              message.kind === "loading" ? "animate-pulse text-[#6B6B6B]" : "text-black"
+                            }`}
+                          >
+                            <ReactMarkdown>{message.content}</ReactMarkdown>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* ── Input — fixed bottom, V14 style ─────────────────── */}
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 flex justify-center px-4 pb-4 sm:px-6 sm:pb-6">
-        <div ref={composerShellRef} className="pointer-events-auto w-full max-w-3xl space-y-3.5">
-          {/* Password Input - Above chat input */}
+        <div ref={composerShellRef} className="pointer-events-auto w-full max-w-3xl space-y-3">
+
+          {/* Password input row */}
           <form onSubmit={handlePasswordSubmit} className="flex items-center justify-center gap-2.5">
             <div
-              className={`relative flex items-center gap-2 rounded-[18px] border bg-white/95 px-2.5 py-2 shadow-[0_4px_20px_-8px_rgba(22,2,17,0.15)] transition-all ${
-                passwordError ? "border-red-500 bg-red-50 shake" : "border-gray-200"
+              className={`relative flex items-center gap-2 rounded-xl border bg-white px-2.5 py-2 shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-all ${
+                passwordError ? "border-red-400 bg-red-50 shake" : "border-[#E2E2E2]"
               }`}
               onClick={() => passwordInputRef.current?.focus()}
             >
@@ -446,39 +439,40 @@ export default function Home() {
                   type="button"
                   aria-label={`Password digit ${index + 1}`}
                   onClick={() => passwordInputRef.current?.focus()}
-                  className={`flex h-10 w-10 items-center justify-center rounded-xl border text-[17px] font-bold leading-none transition sm:h-11 sm:w-11 ${
+                  className={`flex h-10 w-10 items-center justify-center rounded-lg border text-[17px] font-[700] leading-none transition sm:h-11 sm:w-11 ${
                     passwordError
-                      ? "border-red-200 bg-white text-red-700"
+                      ? "border-red-200 bg-white text-red-600"
                       : digit
-                        ? "border-[#160211] bg-white text-[#160211]"
-                        : "border-gray-200 bg-white/80 text-[#160211]/35"
+                        ? "border-black bg-white text-black"
+                        : "border-[#E2E2E2] bg-[#F6F6F6] text-[#AFAFAF]"
                   }`}
                 >
                   {digit}
                 </button>
               ))}
             </div>
+            {/* Unlock button — V14 pill style */}
             <button
               type="submit"
               disabled={isUnlocking}
-              className="min-h-11 rounded-full bg-[#160211] px-5 py-2.5 text-[17px] font-medium leading-6 text-white shadow-[0_4px_20px_-8px_rgba(22,2,17,0.3)] transition-colors hover:bg-black disabled:cursor-not-allowed disabled:opacity-60"
+              className="rounded-full bg-black px-5 py-2.5 text-[14px] font-[500] leading-none text-white shadow-[0_4px_16px_rgba(0,0,0,0.14)] transition hover:bg-[#1F1F1F] disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {isUnlocking ? "Checking" : "Unlock"}
+              {isUnlocking ? "Checking…" : "Unlock"}
             </button>
           </form>
 
-          {/* Chat Input Box */}
-          <form onSubmit={handleSubmit} className="space-y-0">
-            <div className="rounded-[22px] border border-[#d9d9d9] bg-white/95 px-3 py-2 shadow-[0_14px_40px_-26px_rgba(22,2,17,0.22)] backdrop-blur-xl sm:rounded-[26px] sm:px-4 sm:py-2.5">
-              <div className="flex items-center gap-2 sm:gap-3">
+          {/* Chat input — V14 style with pill input + circular send */}
+          <form onSubmit={handleSubmit}>
+            <div className="overflow-hidden rounded-xl border border-[#E2E2E2] bg-white shadow-[0_4px_16px_rgba(0,0,0,0.06)]">
+              <div className="flex items-end gap-2 px-3 py-2 sm:px-4 sm:py-2.5">
                 <button
                   type="button"
-                  className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[#160211] transition hover:bg-gray-100 sm:h-10 sm:w-10"
+                  className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[#AFAFAF] transition hover:bg-[#F6F6F6] hover:text-black"
                   aria-label="Upload file"
                 >
                   <Plus className="h-5 w-5" />
                 </button>
-                <div className="flex min-h-9 min-w-0 flex-1 items-center self-center sm:min-h-10">
+                <div className="flex min-h-9 min-w-0 flex-1 items-center">
                   <textarea
                     ref={textareaRef}
                     value={inputMessage}
@@ -491,33 +485,35 @@ export default function Home() {
                         }
                       }
                     }}
-                    placeholder="Ask BrickAI..."
+                    placeholder="Ask Brick AI…"
                     rows={1}
-                    className="block max-h-[110px] min-h-5 w-full resize-none bg-transparent py-0 text-sm leading-5 text-[#160211] placeholder:text-[#8d8d8d] focus:outline-none sm:max-h-[132px] sm:min-h-6 sm:text-base sm:leading-6"
+                    className="block max-h-[110px] min-h-5 w-full resize-none bg-transparent py-0 text-sm leading-5 text-black placeholder:text-[#AFAFAF] focus:outline-none sm:max-h-[132px] sm:min-h-6 sm:text-[14px] sm:leading-6"
                     disabled={isSending}
                   />
                 </div>
-                <div className="flex items-center gap-1 sm:gap-2">
+                <div className="flex items-center gap-1">
                   <button
                     type="button"
-                    className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[#160211] transition hover:bg-gray-100 sm:h-10 sm:w-10"
+                    className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[#AFAFAF] transition hover:bg-[#F6F6F6] hover:text-black"
                     aria-label="Voice input"
                   >
-                    <Mic className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
+                    <Mic className="h-4 w-4" />
                   </button>
+                  {/* V14 circular send button */}
                   <button
                     type="submit"
                     disabled={!inputMessage.trim() || isSending}
-                    className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#160211] text-white transition hover:bg-black disabled:bg-gray-300 sm:h-10 sm:w-10"
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-black text-white transition hover:bg-[#1F1F1F] disabled:bg-[#E2E2E2] disabled:text-[#AFAFAF]"
                     aria-label="Send"
                   >
-                    <Send className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
+                    <Send className="h-4 w-4" />
                   </button>
                 </div>
               </div>
             </div>
           </form>
-          <p className="mt-1.5 text-center text-[12px] text-[#7b7b7b] sm:mt-2">
+
+          <p className="text-center text-[12px] text-[#AFAFAF]">
             Brick AI, your loyal gatekeeper.
           </p>
         </div>
